@@ -95,5 +95,7 @@ Status · Versão · Dono · Revisores
 | Specs P0: `spc_core`, ledger, logs/ponte, whitelist/fila | ✅ [specs/](specs/) |
 | Infra `dev` (docker-compose) e CI (`.github/workflows/spc-ci.yml`) | ✅ |
 | **Fase 1 — incremento 1:** `spc_core`, ledger, `spc_logs`, `spc_bridge`, migrações | ✅ código + testes |
-| Specs P0 restantes: `spc_multichar`, inventário, HUD, `spc_admin`, bot de whitelist, API mínima | ⏳ próximo |
+| Specs P0: `spc_multichar`, inventário, HUD, `spc_admin`, API e bot de whitelist | ✅ [specs/](specs/) |
+| **Fase 1 — incremento 2:** inventário, `spc_admin`, `spc_multichar`, `spc_hud`, API, bot | ✅ código + testes |
+| Specs P1 da Fase 2: necessidades, banco/caixas, veículos/garagens, DETRAN, hospital, polícia (MDT), celular | ⏳ próximo |
 | Primeiro boot em FXServer de `staging` (64 slots) | ⏳ próximo |

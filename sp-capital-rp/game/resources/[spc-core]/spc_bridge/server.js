@@ -78,7 +78,17 @@ async function start() {
   pub = createClient({ url: REDIS_URL, socket: { reconnectStrategy: (n) => Math.min(1000 * 2 ** n, 30000) } });
   const sub = pub.duplicate();
   for (const c of [pub, sub]) c.on('error', (e) => console.log(`^3[spc_bridge] redis: ${e.message}^0`));
-  pub.on('ready', () => { connected = true; console.log('[spc_bridge] conectado ao Redis'); drainLogs(); });
+  pub.on('ready', async () => {
+    connected = true;
+    console.log('[spc_bridge] conectado ao Redis');
+    // Recria o conjunto de jogadores online (usado por /v1/server/status)
+    try {
+      await pub.del('spc:online');
+      const online = getPlayers();
+      if (online.length > 0) await pub.sAdd('spc:online', online.map(String));
+    } catch (e) { console.log(`^3[spc_bridge] online: ${e.message}^0`); }
+    drainLogs();
+  });
   pub.on('end', () => { connected = false; });
   pub.on('reconnecting', () => { connected = false; });
   await Promise.all([pub.connect(), sub.connect()]);
@@ -89,5 +99,11 @@ setInterval(() => replay.prune(Date.now()), 60000);
 start().catch((e) => console.log(`^1[spc_bridge] falha ao iniciar: ${e.message}^0`));
 
 // Eventos do jogo publicados para API/bot
-on('spc_core:server:playerJoined', (src, accountId) => publishEvent('player.joined', { src, accountId }));
-on('spc_core:server:playerDropped', (src, citizenid) => publishEvent('player.dropped', { src, citizenid }));
+on('spc_core:server:playerJoined', (src, accountId) => {
+  if (connected) pub.sAdd('spc:online', String(src)).catch(() => {});
+  publishEvent('player.joined', { src, accountId });
+});
+on('spc_core:server:playerDropped', (src, citizenid) => {
+  if (connected) pub.sRem('spc:online', String(src)).catch(() => {});
+  publishEvent('player.dropped', { src, citizenid });
+});

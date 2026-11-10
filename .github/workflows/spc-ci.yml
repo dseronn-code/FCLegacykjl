@@ -21,6 +21,9 @@ jobs:
         options: >-
           --health-cmd="healthcheck.sh --connect --innodb_initialized"
           --health-interval=5s --health-timeout=5s --health-retries=20
+      redis:
+        image: redis:7.4-alpine
+        ports: ["6379:6379"]
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -37,8 +40,11 @@ jobs:
       - name: Testes do protocolo da ponte
         # node --test trataria [spc-core] como glob; executar o arquivo diretamente roda os testes do node:test
         run: node 'game/resources/[spc-core]/spc_bridge/protocol.test.js'
-      - name: Código Penal JSON atualizado
-        run: python3 infra/scripts/gen-penal-code.py && git diff --exit-code packages/shared/penal-code.json
+      - name: JSON gerados atualizados (Código Penal e permissões)
+        run: |
+          python3 infra/scripts/gen-penal-code.py
+          lua5.4 infra/scripts/gen-permissions.lua
+          git diff --exit-code packages/shared/
       - name: Migrações (aplicar duas vezes = idempotente)
         env:
           MYSQL: mariadb -h127.0.0.1 -uroot -pci
@@ -51,3 +57,14 @@ jobs:
           DB_USER: root
           DB_PASSWORD: ci
         run: npm ci --no-audit --no-fund && npm test
+      - name: API (tipos + testes contra MariaDB e Redis)
+        working-directory: sp-capital-rp/services/api
+        env:
+          DB_HOST: 127.0.0.1
+          DB_USER: root
+          DB_PASSWORD: ci
+          REDIS_URL: redis://127.0.0.1:6379
+        run: npm ci --no-audit --no-fund && npx tsc --noEmit && npm test
+      - name: Bot do Discord (tipos + testes)
+        working-directory: sp-capital-rp/apps/discord-bot
+        run: npm ci --no-audit --no-fund && npx tsc --noEmit && npm test

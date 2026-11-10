@@ -30,7 +30,7 @@ GTA RP (FiveM) ambientada numa São Paulo fictícia, projetada para **500+ jogad
 | Pasta | Conteúdo |
 |-------|----------|
 | [adr/](adr/README.md) | ADR-0001 a 0010 (FiveM/OneSync, core próprio, Lua, TS, MariaDB, Redis, logs, painel, monorepo, voz) |
-| [specs/](specs/) | Specs P0: [spc_core](specs/spc_core.md), [ledger](specs/ledger.md), [logs e ponte](specs/logs-e-bridge.md), [whitelist e fila](specs/fila-whitelist.md) |
+| [specs/](specs/) | Specs P0: [spc_core](specs/spc_core.md), [ledger](specs/ledger.md), [logs e ponte](specs/logs-e-bridge.md), [whitelist e fila](specs/fila-whitelist.md), [multichar](specs/spc_multichar.md), [inventário](specs/inventario.md), [HUD](specs/hud.md), [admin](specs/spc_admin.md), [API e bot](specs/api-e-bot-whitelist.md) |
 | [publico/](publico/) | [Código Penal](publico/codigo-penal.md) e [Regulamento Geral](publico/regulamento-geral.md) |
 
 Código: [`/sp-capital-rp`](../../sp-capital-rp/README.md).

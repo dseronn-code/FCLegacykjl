@@ -24,9 +24,19 @@ exec secrets.cfg
 # Desenvolvimento local apenas (comandos /spc_criar, /spc_entrar...). NUNCA em produção.
 setr spc_dev 0
 
+# Inventário: ponte própria (instalar com infra/scripts/install-overlays.sh)
+setr inventory:framework "spc"
+setr inventory:police ["pmc", "pciv", "prc"]
+setr inventory:slots 40
+setr inventory:weight 30000
+
 ensure oxmysql
 ensure ox_lib
 ensure spc_bridge
 ensure spc_logs
 ensure spc_core
+ensure ox_inventory
+ensure spc_admin
+ensure spc_hud
+ensure spc_multichar
 ensure pma-voice
