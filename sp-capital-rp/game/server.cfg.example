@@ -1,0 +1,45 @@
+# SP Capital RP — server.cfg de referência (copiar para server.cfg; segredos ficam em secrets.cfg, fora do git)
+endpoint_add_tcp "0.0.0.0:30120"
+endpoint_add_udp "0.0.0.0:30120"
+
+sv_hostname "SP Capital RP | Whitelist | discord.gg/..."
+sets locale "pt-BR"
+sets tags "roleplay, brasil, sp, serious rp, whitelist"
+sv_maxclients 512
+sv_enforceGameBuild 3258
+
+# OneSync Infinity + entidades só criadas pelo servidor (ADR-0001)
+set onesync on
+sv_entityLockdown strict
+set sv_filterRequestControl 4
+
+# Segredos: license key, mysql, redis e HMAC da ponte
+exec secrets.cfg
+# secrets.cfg contém, por exemplo:
+#   sv_licenseKey "..."
+#   set mysql_connection_string "mysql://spc:SENHA@10.0.0.5/spcapital?charset=utf8mb4"
+#   set spc_redis_url "redis://10.0.0.5:6379"
+#   set spc_bridge_secret "..."
+
+# Desenvolvimento local apenas (comandos /spc_criar, /spc_entrar...). NUNCA em produção.
+setr spc_dev 0
+
+# Inventário: ponte própria (instalar com infra/scripts/install-overlays.sh)
+setr inventory:framework "spc"
+setr inventory:police ["pmc", "pciv", "prc"]
+setr inventory:slots 40
+setr inventory:weight 30000
+
+ensure oxmysql
+ensure ox_lib
+ensure spc_bridge
+ensure spc_logs
+ensure spc_core
+ensure ox_target
+ensure ox_inventory
+ensure spc_admin
+ensure spc_needs
+ensure spc_bank
+ensure spc_hud
+ensure spc_multichar
+ensure pma-voice

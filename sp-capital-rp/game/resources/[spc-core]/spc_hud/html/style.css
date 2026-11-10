@@ -1,0 +1,19 @@
+[hidden] { display: none !important; }
+:root { --bg: rgba(10, 12, 18, .72); --text: #eef1f6; --muted: #9aa3b5; }
+body { margin: 0; font-family: "Segoe UI", system-ui, sans-serif; color: var(--text); background: transparent; overflow: hidden; }
+#compass { position: fixed; top: 16px; left: 50%; transform: translateX(-50%); display: flex; gap: 10px; align-items: center; padding: 6px 14px; background: var(--bg); border-radius: 999px; font-size: 13px; }
+#dir { font-weight: 700; color: #f2b705; min-width: 22px; text-align: center; }
+#bars { position: fixed; left: 24px; bottom: 24px; display: flex; gap: 8px; align-items: flex-end; padding: 8px 10px; background: var(--bg); border-radius: 10px; }
+.bar { width: 8px; height: 46px; background: rgba(255,255,255,.12); border-radius: 4px; position: relative; overflow: hidden; }
+.bar i { position: absolute; left: 0; right: 0; bottom: 0; height: calc(var(--v) * 1%); border-radius: 4px; transition: height .3s; }
+.health i { background: #4cd964; } .armor i { background: #4aa3ff; } .hunger i { background: #f5a623; }
+.thirst i { background: #3fc6e0; } .stress i { background: #e85d75; } .fuel i { background: #f2b705; }
+#voice { display: flex; gap: 2px; align-items: flex-end; height: 46px; padding-left: 4px; }
+#voice b { width: 4px; background: rgba(255,255,255,.25); border-radius: 2px; }
+#voice b:nth-child(1) { height: 12px; } #voice b:nth-child(2) { height: 22px; } #voice b:nth-child(3) { height: 32px; }
+#voice b.on { background: #fff; } #voice.talking b.on { background: #4cd964; }
+#radio { font-size: 12px; color: var(--muted); align-self: center; }
+#vehicle { position: fixed; right: 32px; bottom: 32px; display: flex; align-items: flex-end; gap: 6px; padding: 10px 14px; background: var(--bg); border-radius: 12px; }
+#speed { font-size: 38px; font-weight: 700; line-height: 1; font-variant-numeric: tabular-nums; }
+#vehicle small { color: var(--muted); margin-right: 10px; }
+#hud.in-vehicle #bars { bottom: 230px; } /* acima do radar do GTA, que aparece só no veículo */

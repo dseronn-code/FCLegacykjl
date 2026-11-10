@@ -1,8 +1,11 @@
 node_modules/
-build/
 dist/
+build/
 coverage/
 .DS_Store
 *.log
-.env*
+.env
+.env.*
 !.env.example
+sp-capital-rp/game/secrets.cfg
+sp-capital-rp/game/server.cfg

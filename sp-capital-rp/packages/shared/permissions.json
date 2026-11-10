@@ -1,0 +1,11 @@
+{
+  "roles": ["helper", "mod", "admin", "head", "dev", "owner"],
+  "effective": {
+    "helper": ["players.read", "tickets.handle", "whitelist.review"],
+    "mod": ["bans.temp", "logs.read", "players.kick", "players.read", "players.revive", "players.spectate", "players.teleport", "tickets.handle", "warnings.write", "whitelist.review"],
+    "admin": ["bans.temp", "bans.write", "inventory.read", "logs.read", "players.kick", "players.read", "players.revive", "players.spectate", "players.teleport", "tickets.handle", "vehicles.manage", "warnings.write", "whitelist.review"],
+    "head": ["bans.temp", "bans.write", "economy.read", "inventory.read", "logs.read", "orgs.manage", "players.kick", "players.read", "players.revive", "players.spectate", "players.teleport", "staff.manage", "tickets.handle", "vehicles.manage", "warnings.write", "whitelist.review"],
+    "dev": ["bans.temp", "bans.write", "economy.read", "economy.revert", "inventory.read", "logs.read", "orgs.manage", "players.kick", "players.read", "players.revive", "players.spectate", "players.teleport", "server.manage", "staff.manage", "tickets.handle", "vehicles.manage", "warnings.write", "whitelist.review"],
+    "owner": ["*", "bans.temp", "bans.write", "economy.read", "economy.revert", "inventory.read", "logs.read", "orgs.manage", "players.kick", "players.read", "players.revive", "players.spectate", "players.teleport", "server.manage", "staff.manage", "tickets.handle", "vehicles.manage", "warnings.write", "whitelist.review"]
+  }
+}

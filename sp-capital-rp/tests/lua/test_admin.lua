@@ -1,0 +1,33 @@
+local A = dofile('game/resources/[spc-core]/spc_admin/shared/admin_core.lua')
+
+describe('Admin.parseDuration', function()
+    it('horas e permanente', function()
+        eq(A.parseDuration('24'), 24); eq(A.parseDuration('perm'), 'perm'); eq(A.parseDuration('8760'), 8760)
+    end)
+    it('recusa inválidos', function()
+        for _, v in ipairs({ '0', '-1', '1.5', 'abc', '8761', nil }) do
+            local d, e = A.parseDuration(v); eq(d, nil); eq(e, 'invalid_duration', tostring(v))
+        end
+    end)
+end)
+
+describe('Admin.canBan', function()
+    it('bans.write pode tudo', function() truthy(A.canBan('perm', true, false)) end)
+    it('bans.temp limitado a 72h', function()
+        truthy(A.canBan(72, false, true))
+        local ok, e = A.canBan(73, false, true); truthy(not ok); eq(e, 'temp_limit')
+        ok, e = A.canBan('perm', false, true); eq(e, 'temp_limit')
+    end)
+    it('sem permissão', function() local ok, e = A.canBan(1, false, false); truthy(not ok); eq(e, 'no_permission') end)
+end)
+
+describe('Admin.reason / parseTarget / parsePoints', function()
+    it('motivo junta argumentos e exige 5 caracteres', function()
+        eq(A.reason({ '12', 'RDM', 'na', 'praça' }, 2), 'RDM na praça')
+        local r, e = A.reason({ '12', 'rdm' }, 2); eq(r, nil); eq(e, 'reason_required')
+    end)
+    it('alvo e pontos', function()
+        eq(A.parseTarget('7'), 7); eq(A.parseTarget('0'), nil); eq(A.parseTarget('x'), nil)
+        eq(A.parsePoints('3'), 3); eq(A.parsePoints('4'), nil)
+    end)
+end)

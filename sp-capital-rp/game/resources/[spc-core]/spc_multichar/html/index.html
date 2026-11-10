@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <title>SP Capital — Personagens</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <main id="app" hidden>
+    <header>
+      <h1>SP Capital</h1>
+      <p>Escolha quem você vai ser hoje na cidade.</p>
+    </header>
+    <section id="list" aria-label="Seus personagens"></section>
+    <p id="listError" class="error" role="alert"></p>
+
+    <form id="form" hidden novalidate>
+      <h2>Novo personagem</h2>
+      <label>Nome <input name="firstName" required maxlength="20" autocomplete="off"></label>
+      <label>Sobrenome <input name="lastName" required maxlength="20" autocomplete="off"></label>
+      <label>Nascimento <input name="birthdate" type="date" required></label>
+      <fieldset>
+        <legend>Gênero</legend>
+        <label><input type="radio" name="gender" value="m" checked> Masculino</label>
+        <label><input type="radio" name="gender" value="f"> Feminino</label>
+        <label><input type="radio" name="gender" value="x"> Outro</label>
+      </fieldset>
+      <label>Nacionalidade <select name="nationality"></select></label>
+      <p id="error" role="alert"></p>
+      <div class="actions">
+        <button type="button" id="cancel" class="ghost">Voltar</button>
+        <button type="submit" id="submit">Criar personagem</button>
+      </div>
+    </form>
+  </main>
+  <script src="app.js"></script>
+</body>
+</html>

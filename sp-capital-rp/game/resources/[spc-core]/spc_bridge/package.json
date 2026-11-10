@@ -1,0 +1,7 @@
+{
+  "name": "spc_bridge",
+  "private": true,
+  "version": "0.1.0",
+  "main": "server.js",
+  "dependencies": { "redis": "4.7.0" }
+}

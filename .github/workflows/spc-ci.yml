@@ -1,0 +1,70 @@
+# CI do SP Capital RP — roda apenas quando sp-capital-rp/ ou a documentação mudam
+name: spc-ci
+on:
+  push:
+    paths: ["sp-capital-rp/**", "docs/sp-capital-rp/**", ".github/workflows/spc-ci.yml"]
+  pull_request:
+    paths: ["sp-capital-rp/**", "docs/sp-capital-rp/**", ".github/workflows/spc-ci.yml"]
+
+jobs:
+  test:
+    runs-on: ubuntu-24.04
+    defaults:
+      run:
+        working-directory: sp-capital-rp
+    services:
+      mariadb:
+        image: mariadb:11.4
+        env:
+          MARIADB_ROOT_PASSWORD: ci
+        ports: ["3306:3306"]
+        options: >-
+          --health-cmd="healthcheck.sh --connect --innodb_initialized"
+          --health-interval=5s --health-timeout=5s --health-retries=20
+      redis:
+        image: redis:7.4-alpine
+        ports: ["6379:6379"]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Instalar Lua 5.4 e cliente MariaDB
+        run: sudo apt-get update && sudo apt-get install -y lua5.4 mariadb-client
+      - name: Sintaxe Lua
+        run: find game -name '*.lua' -print0 | xargs -0 -n1 luac5.4 -p && rm -f luac.out
+      - name: Sintaxe JS
+        run: node --check 'game/resources/[spc-core]/spc_bridge/server.js'
+      - name: Testes unitários Lua
+        run: lua5.4 tests/lua/run.lua
+      - name: Testes do protocolo da ponte
+        # node --test trataria [spc-core] como glob; executar o arquivo diretamente roda os testes do node:test
+        run: node 'game/resources/[spc-core]/spc_bridge/protocol.test.js'
+      - name: JSON gerados atualizados (Código Penal e permissões)
+        run: |
+          python3 infra/scripts/gen-penal-code.py
+          lua5.4 infra/scripts/gen-permissions.lua
+          git diff --exit-code packages/shared/
+      - name: Migrações (aplicar duas vezes = idempotente)
+        env:
+          MYSQL: mariadb -h127.0.0.1 -uroot -pci
+          DB_NAME: spcapital
+        run: infra/scripts/migrate.sh && infra/scripts/migrate.sh
+      - name: Testes de integração (Lua real + MariaDB)
+        working-directory: sp-capital-rp/tests/integration
+        env:
+          DB_HOST: 127.0.0.1
+          DB_USER: root
+          DB_PASSWORD: ci
+        run: npm ci --no-audit --no-fund && npm test
+      - name: API (tipos + testes contra MariaDB e Redis)
+        working-directory: sp-capital-rp/services/api
+        env:
+          DB_HOST: 127.0.0.1
+          DB_USER: root
+          DB_PASSWORD: ci
+          REDIS_URL: redis://127.0.0.1:6379
+        run: npm ci --no-audit --no-fund && npx tsc --noEmit && npm test
+      - name: Bot do Discord (tipos + testes)
+        working-directory: sp-capital-rp/apps/discord-bot
+        run: npm ci --no-audit --no-fund && npx tsc --noEmit && npm test
