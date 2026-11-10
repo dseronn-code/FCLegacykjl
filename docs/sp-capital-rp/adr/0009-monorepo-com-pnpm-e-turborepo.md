@@ -6,7 +6,7 @@
 Tipos, constantes e migrações são compartilhados.
 
 ## Decisão
-Um monorepo; neste repositório ele vive em `sp-capital-rp/` (o restante do repositório contém outro projeto).
+Um monorepo: código em `sp-capital-rp/`, documentação em `docs/sp-capital-rp/` (o app antigo que dividia o repositório foi removido em 2026-11-10).
 
 ## Consequências
 + Mudanças atômicas entre jogo, banco e web.
