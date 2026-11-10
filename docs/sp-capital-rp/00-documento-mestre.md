@@ -1,6 +1,6 @@
 # 00 — Documento Mestre (Game Design Document)
 
-**Status:** EM REVISÃO · **Versão:** 0.1 · **Dono:** CTO / Lead Developer
+**Status:** APROVADO · **Versão:** 1.0 · **Dono:** CTO / Lead Developer
 
 ---
 

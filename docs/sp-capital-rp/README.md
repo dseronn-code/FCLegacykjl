@@ -25,6 +25,16 @@ GTA RP (FiveM) ambientada numa São Paulo fictícia, projetada para **500+ jogad
 | 12 | [Painel Web](12-painel-web.md) | Painel do jogador, staff, facções e empresas; APIs; RBAC |
 | 13 | [Processo de Desenvolvimento](13-processo-desenvolvimento.md) | RFC/ADR, padrões, Definition of Done, testes, deploy |
 
+### Decisões, specs e documentos públicos
+
+| Pasta | Conteúdo |
+|-------|----------|
+| [adr/](adr/README.md) | ADR-0001 a 0010 (FiveM/OneSync, core próprio, Lua, TS, MariaDB, Redis, logs, painel, monorepo, voz) |
+| [specs/](specs/) | Specs P0: [spc_core](specs/spc_core.md), [ledger](specs/ledger.md), [logs e ponte](specs/logs-e-bridge.md), [whitelist e fila](specs/fila-whitelist.md) |
+| [publico/](publico/) | [Código Penal](publico/codigo-penal.md) e [Regulamento Geral](publico/regulamento-geral.md) |
+
+Código: [`/sp-capital-rp`](../../sp-capital-rp/README.md).
+
 ## Status dos documentos
 
 | Status | Significado |
@@ -34,7 +44,7 @@ GTA RP (FiveM) ambientada numa São Paulo fictícia, projetada para **500+ jogad
 | `APROVADO` | Pode ser implementado; mudanças exigem RFC |
 | `IMPLEMENTADO` | Código em produção reflete o documento |
 
-Todos os documentos abaixo estão em **`EM REVISÃO` — v0.1 (2026-11-10)**.
+Documentos 00–13: **`APROVADO` — v1.0 (2026-11-10)**. Novos documentos (ADRs, specs, documentos públicos) têm status próprio no cabeçalho.
 
 ## Convenções
 

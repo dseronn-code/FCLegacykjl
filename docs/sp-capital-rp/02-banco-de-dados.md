@@ -1,6 +1,6 @@
 # 02 — Banco de Dados
 
-**Status:** EM REVISÃO · **Versão:** 0.1 · **Dono:** DBA / CTO
+**Status:** APROVADO · **Versão:** 1.0 · **Dono:** DBA / CTO
 
 ---
 

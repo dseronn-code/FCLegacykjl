@@ -1,6 +1,6 @@
 # 06 — Facções e Organizações
 
-**Status:** EM REVISÃO · **Versão:** 0.1 · **Dono:** Head de Staff + Lead Dev
+**Status:** APROVADO · **Versão:** 1.0 · **Dono:** Head de Staff + Lead Dev
 
 > **Todas as organizações são fictícias.** É proibido criar facções com nome, sigla, símbolo ou
 > referência a organizações criminosas reais. Isso protege o servidor juridicamente e no Discord/Twitch.

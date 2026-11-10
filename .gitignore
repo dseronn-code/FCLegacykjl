@@ -6,3 +6,6 @@ coverage/
 *.log
 .env*
 !.env.example
+sp-capital-rp/**/node_modules/
+sp-capital-rp/game/secrets.cfg
+sp-capital-rp/game/server.cfg

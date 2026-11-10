@@ -1,6 +1,6 @@
 # 09 — Hospital, SAMU e Bombeiros
 
-**Status:** EM REVISÃO · **Versão:** 0.1 · **Dono:** Lead Dev + Direção do Hospital
+**Status:** APROVADO · **Versão:** 1.0 · **Dono:** Lead Dev + Direção do Hospital
 
 ---
 

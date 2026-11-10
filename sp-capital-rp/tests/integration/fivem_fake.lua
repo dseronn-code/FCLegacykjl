@@ -1,0 +1,62 @@
+-- Ambiente FiveM/oxmysql simulado para rodar o Lua real do servidor fora do FXServer.
+-- `jsdb(op, sql, params)` é injetado pelo run.mjs e retorna uma Promise (aguardada com :await()).
+Fake = { events = {}, callbacks = {}, clientEvents = {}, serverEvents = {}, dropped = {}, identifiers = {},
+    states = {}, exportsTable = {}, now = 1000 }
+
+local function call(op, sql, params) return jsdb(op, sql, params):await().v end
+
+MySQL = {
+    query = { await = function(sql, p) return call('query', sql, p) end },
+    single = { await = function(sql, p) return call('single', sql, p) end },
+    scalar = { await = function(sql, p) return call('scalar', sql, p) end },
+    insert = { await = function(sql, p) return call('insert', sql, p) end },
+    update = { await = function(sql, p) return call('update', sql, p) end },
+}
+
+-- Mesma semântica do oxmysql: retorno false => ROLLBACK; erro => ROLLBACK e retorna false
+function MySQL.startTransaction(fn)
+    call('begin')
+    local ok, commit = pcall(fn, function(sql, p) return call('query', sql, p) end)
+    if ok and commit ~= false then call('commit'); return true end
+    if not ok then print('[fake oxmysql] erro na transação: ' .. tostring(commit)) end
+    call('rollback')
+    return false
+end
+
+json = { encode = function(v) return jsonEncode(v) end, decode = function(s) return jsonDecode(s) end }
+
+function GetGameTimer() Fake.now = Fake.now + 1; return Fake.now end
+function GetConvarInt() return 0 end
+function GetResourceState() return 'missing' end
+function GetInvokingResource() return 'test_resource' end
+function GetCurrentResourceName() return 'spc_core' end
+function Wait() end
+function CreateThread() end
+
+function AddEventHandler(name, fn)
+    Fake.events[name] = Fake.events[name] or {}
+    table.insert(Fake.events[name], fn)
+end
+
+function Fake.emit(name, src, ...)
+    source = src
+    for _, fn in ipairs(Fake.events[name] or {}) do fn(...) end
+end
+
+function TriggerEvent(name, ...) table.insert(Fake.serverEvents, { name = name, args = { ... } }) end
+function TriggerClientEvent(name, src, ...) table.insert(Fake.clientEvents, { name = name, src = src, args = { ... } }) end
+function DropPlayer(src, reason) table.insert(Fake.dropped, { src = src, reason = reason }) end
+function GetPlayerIdentifierByType(src, t) return (Fake.identifiers[src] or {})[t] end
+function GetPlayerPed() return 1 end
+function GetEntityCoords() return { x = 100.5, y = 200.25, z = 30.0 } end
+function GetEntityHeading() return 90.0 end
+
+function Player(src)
+    Fake.states[src] = Fake.states[src] or {}
+    local bag = Fake.states[src]
+    return { state = setmetatable({ set = function(_, k, v) bag[k] = v end }, { __index = bag }) }
+end
+
+exports = setmetatable({}, { __call = function(_, name, fn) Fake.exportsTable[name] = fn end })
+
+lib = { callback = { register = function(name, fn) Fake.callbacks[name] = fn end } }

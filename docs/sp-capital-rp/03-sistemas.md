@@ -1,6 +1,6 @@
 # 03 — Catálogo de Sistemas
 
-**Status:** EM REVISÃO · **Versão:** 0.1 · **Dono:** Lead Developer
+**Status:** APROVADO · **Versão:** 1.0 · **Dono:** Lead Developer
 
 Cada sistema listado aqui terá sua própria **spec detalhada** (`docs/specs/<sistema>.md`) antes de ser
 implementado, seguindo o modelo em [13-processo-desenvolvimento.md](13-processo-desenvolvimento.md).

@@ -1,6 +1,6 @@
 # 13 — Processo de Desenvolvimento
 
-**Status:** EM REVISÃO · **Versão:** 0.1 · **Dono:** CTO
+**Status:** APROVADO · **Versão:** 1.0 · **Dono:** CTO
 
 ---
 
@@ -85,11 +85,15 @@ Status · Versão · Dono · Revisores
 - Versão semântica por pacote; changelog gerado e anunciado pelo bot.
 - *Feature flags* para ativar sistemas novos gradualmente (ex.: só para staff, depois 10%, depois todos).
 
-## 7. Próximos passos imediatos (Fase 0)
+## 7. Andamento
 
-1. Revisão e aprovação destes 14 documentos pelo time.
-2. Escrever o **Código Penal da Cidade** e o **Regulamento Geral** (documentos públicos).
-3. Abrir ADRs formais 001–010 (resumidas em [01-arquitetura.md](01-arquitetura.md)).
-4. Specs P0: `spc_core`, ledger, inventário, HUD, fila/whitelist, logs, admin, bot de whitelist.
-5. Provisionar infra de `dev`/`staging` e CI.
-6. Só então iniciar a **Fase 1 — Fundação** (primeiro código).
+| Item | Estado |
+|------|--------|
+| Documentos 00–13 aprovados | ✅ 2026-11-10 |
+| Código Penal e Regulamento Geral | ✅ [publico/](publico/) |
+| ADRs 0001–0010 | ✅ [adr/](adr/README.md) |
+| Specs P0: `spc_core`, ledger, logs/ponte, whitelist/fila | ✅ [specs/](specs/) |
+| Infra `dev` (docker-compose) e CI (`.github/workflows/spc-ci.yml`) | ✅ |
+| **Fase 1 — incremento 1:** `spc_core`, ledger, `spc_logs`, `spc_bridge`, migrações | ✅ código + testes |
+| Specs P0 restantes: `spc_multichar`, inventário, HUD, `spc_admin`, bot de whitelist, API mínima | ⏳ próximo |
+| Primeiro boot em FXServer de `staging` (64 slots) | ⏳ próximo |

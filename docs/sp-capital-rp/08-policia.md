@@ -1,6 +1,6 @@
 # 08 — Polícia
 
-**Status:** EM REVISÃO · **Versão:** 0.1 · **Dono:** Lead Dev + Comando da Polícia
+**Status:** APROVADO · **Versão:** 1.0 · **Dono:** Lead Dev + Comando da Polícia
 
 ---
 

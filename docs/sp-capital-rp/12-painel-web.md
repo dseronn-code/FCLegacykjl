@@ -1,6 +1,6 @@
 # 12 — Painel Web
 
-**Status:** EM REVISÃO · **Versão:** 0.1 · **Dono:** Dev Web
+**Status:** APROVADO · **Versão:** 1.0 · **Dono:** Dev Web
 
 ---
 

@@ -1,6 +1,6 @@
 # 04 — Empregos
 
-**Status:** EM REVISÃO · **Versão:** 0.1 · **Dono:** Designer de Economia + Lead Dev
+**Status:** APROVADO · **Versão:** 1.0 · **Dono:** Designer de Economia + Lead Dev
 
 ---
 

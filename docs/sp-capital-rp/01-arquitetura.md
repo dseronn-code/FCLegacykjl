@@ -1,6 +1,6 @@
 # 01 — Arquitetura
 
-**Status:** EM REVISÃO · **Versão:** 0.1 · **Dono:** CTO
+**Status:** APROVADO · **Versão:** 1.0 · **Dono:** CTO
 
 ---
 

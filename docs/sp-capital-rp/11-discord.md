@@ -1,6 +1,6 @@
 # 11 — Discord
 
-**Status:** EM REVISÃO · **Versão:** 0.1 · **Dono:** Head de Staff + Dev Web
+**Status:** APROVADO · **Versão:** 1.0 · **Dono:** Head de Staff + Dev Web
 
 ---
 

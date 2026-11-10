@@ -1,0 +1,16 @@
+local P = SPC.PermissionsCore
+local eff = P.build(SPC.Config.StaffRoles, SPC.Config.RolePermissions)
+
+describe('PermissionsCore', function()
+    it('herança: mod tem permissões de helper', function()
+        truthy(P.has(eff.mod, 'players.read')); truthy(P.has(eff.mod, 'players.kick'))
+    end)
+    it('papel inferior não tem permissões do superior', function()
+        truthy(not P.has(eff.helper, 'players.kick')); truthy(not P.has(eff.admin, 'economy.revert'))
+    end)
+    it('owner tem tudo', function() truthy(P.has(eff.owner, 'qualquer.coisa')) end)
+    it('curinga por prefixo', function()
+        truthy(P.has({ ['players.*'] = true }, 'players.kick')); truthy(not P.has({ ['players.*'] = true }, 'bans.write'))
+    end)
+    it('sem papel = sem permissão', function() truthy(not P.has(nil, 'players.read')) end)
+end)

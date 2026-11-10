@@ -1,0 +1,7 @@
+{
+  "name": "spc-integration-tests",
+  "private": true,
+  "type": "module",
+  "scripts": { "test": "node run.mjs" },
+  "dependencies": { "mysql2": "3.11.3", "wasmoon": "1.16.0" }
+}

@@ -1,6 +1,6 @@
 # 10 — DETRAN da Capital
 
-**Status:** EM REVISÃO · **Versão:** 0.1 · **Dono:** Lead Dev + Direção do DETRAN
+**Status:** APROVADO · **Versão:** 1.0 · **Dono:** Lead Dev + Direção do DETRAN
 
 ---
 
