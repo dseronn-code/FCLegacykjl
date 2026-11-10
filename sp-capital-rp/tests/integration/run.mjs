@@ -73,11 +73,17 @@ const files = [
   ...['db', 'log', 'players', 'permissions', 'ledger', 'connection', 'characters', 'persistence', 'commands', 'exports']
     .map((f) => join(core, 'server', `${f}.lua`)),
 ];
+const adminRes = join(root, 'game', 'resources', '[spc-core]', 'spc_admin');
+files.push(join(adminRes, 'shared', 'admin_core.lua'), join(adminRes, 'server', 'db.lua'), join(adminRes, 'server', 'main.lua'));
 for (const f of files) await lua.doString(readFileSync(f, 'utf8'));
 
-const results = await lua.doString(readFileSync(join(here, 'test_server.lua'), 'utf8'));
-for (const f of Object.values(results.failures ?? {})) console.log(`FALHOU  ${f}`);
-console.log(`${results.passed} passaram, ${results.failed} falharam`);
+let passed = 0, failed = 0;
+for (const suite of ['test_server.lua', 'test_admin.lua']) {
+  const r = await lua.doString(readFileSync(join(here, suite), 'utf8'));
+  for (const f of Object.values(r.failures ?? {})) console.log(`FALHOU  [${suite}] ${f}`);
+  passed += r.passed; failed += r.failed;
+}
+console.log(`${passed} passaram, ${failed} falharam`);
 await conn.end();
 lua.global.close();
-process.exit(results.failed === 0 ? 0 : 1);
+process.exit(failed === 0 ? 0 : 1);

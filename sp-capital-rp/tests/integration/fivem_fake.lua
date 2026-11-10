@@ -47,6 +47,9 @@ function TriggerEvent(name, ...) table.insert(Fake.serverEvents, { name = name, 
 function TriggerClientEvent(name, src, ...) table.insert(Fake.clientEvents, { name = name, src = src, args = { ... } }) end
 function DropPlayer(src, reason) table.insert(Fake.dropped, { src = src, reason = reason }) end
 function GetPlayerIdentifierByType(src, t) return (Fake.identifiers[src] or {})[t] end
+Fake.tokens = {}
+function GetNumPlayerTokens(src) return #(Fake.tokens[src] or {}) end
+function GetPlayerToken(src, i) return (Fake.tokens[src] or {})[i + 1] end
 function GetPlayerPed() return 1 end
 function GetEntityCoords() return { x = 100.5, y = 200.25, z = 30.0 } end
 function GetEntityHeading() return 90.0 end
@@ -57,6 +60,33 @@ function Player(src)
     return { state = setmetatable({ set = function(_, k, v) bag[k] = v end }, { __index = bag }) }
 end
 
-exports = setmetatable({}, { __call = function(_, name, fn) Fake.exportsTable[name] = fn end })
+-- exports(name, fn) registra; exports.recurso:Nome(...) chama o registrado (o self é descartado, como no FiveM)
+local resourceProxy = setmetatable({}, { __index = function(_, name)
+    return function(_, ...) return Fake.exportsTable[name](...) end
+end })
+exports = setmetatable({}, {
+    __call = function(_, name, fn) Fake.exportsTable[name] = fn end,
+    __index = function() return resourceProxy end,
+})
+
+Fake.commands = {}
+function RegisterCommand(name, fn) Fake.commands[name] = fn end
+function Fake.run(src, line)
+    local args = {}
+    for w in line:gmatch('%S+') do args[#args + 1] = w end
+    local name = table.remove(args, 1)
+    source = src
+    Fake.commands[name](src, args, line)
+end
+function GetPlayerName(src) return Fake.identifiers[src] and 'Jogador' or nil end
+function GetPlayerEndpoint() return '127.0.0.1' end
+function SetEntityCoords() end
+function Fake.notices(src)
+    local out = {}
+    for _, e in ipairs(Fake.clientEvents) do
+        if e.name == 'ox_lib:notify' and e.src == src then out[#out + 1] = e.args[1].description end
+    end
+    return out
+end
 
 lib = { callback = { register = function(name, fn) Fake.callbacks[name] = fn end } }

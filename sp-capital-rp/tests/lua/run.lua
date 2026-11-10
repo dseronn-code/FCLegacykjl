@@ -18,7 +18,7 @@ function eq(a, b, msg)
 end
 function truthy(v, msg) if not v then error(msg or 'esperado verdadeiro', 2) end end
 
-for _, f in ipairs({ 'test_identity.lua', 'test_util.lua', 'test_ledger_core.lua', 'test_permissions.lua' }) do
+for _, f in ipairs({ 'test_identity.lua', 'test_util.lua', 'test_ledger_core.lua', 'test_permissions.lua', 'test_admin.lua' }) do
     dofile('tests/lua/' .. f)
 end
 

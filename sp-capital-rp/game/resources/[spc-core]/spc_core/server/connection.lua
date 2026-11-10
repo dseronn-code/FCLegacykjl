@@ -25,6 +25,18 @@ local function identifiersOf(src)
     return ids
 end
 
+--- Tokens de hardware do cliente (`token:<valor>`), usados para impedir ban evasion no mesmo PC.
+function SPC.tokensOf(src)
+    local tokens = {}
+    for i = 0, GetNumPlayerTokens(src) - 1 do
+        local t = GetPlayerToken(src, i)
+        if t then tokens[#tokens + 1] = 'token:' .. t end
+    end
+    return tokens
+end
+
+SPC.identifiersOf = identifiersOf
+
 local function findBan(identifierList, accountId)
     local params = {}
     for _, v in ipairs(identifierList) do params[#params + 1] = v end
@@ -48,10 +60,11 @@ local function banMessage(ban)
 end
 
 --- Verifica a conta. Retorna account (linha) ou nil, chave de mensagem / ban.
-function SPC.checkAccount(ids)
+function SPC.checkAccount(ids, tokens)
     local discordId = ids.discord and ids.discord:gsub('^discord:', '') or nil
     local identifierList = {}
     for _, v in pairs(ids) do identifierList[#identifierList + 1] = v end
+    for _, t in ipairs(tokens or {}) do identifierList[#identifierList + 1] = t end
 
     local ban = findBan(identifierList, nil)
     if ban then return nil, 'ban', ban end
@@ -83,7 +96,7 @@ AddEventHandler('playerConnecting', function(_, _, deferrals)
     if not ids.license then return deferrals.done(MESSAGES.no_license) end
     if not ids.discord then return deferrals.done(MESSAGES.no_discord) end
 
-    local ok, acc, reason, ban = pcall(SPC.checkAccount, ids)
+    local ok, acc, reason, ban = pcall(SPC.checkAccount, ids, SPC.tokensOf(src))
     if not ok then
         SPC.Log('connection', 'error', { license = ids.license, error = tostring(acc) }, 'warn')
         return deferrals.done(MESSAGES.error)

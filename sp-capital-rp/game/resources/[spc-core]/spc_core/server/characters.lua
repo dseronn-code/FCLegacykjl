@@ -141,7 +141,8 @@ local function guarded(name, fn)
 end
 
 guarded('characters:list', function(session)
-    return { ok = true, characters = Characters.list(session.accountId) }
+    return { ok = true, characters = Characters.list(session.accountId),
+        slots = session.charSlots or Config.DefaultCharSlots, nationalities = Config.Nationalities }
 end)
 
 guarded('characters:create', function(session, data)
