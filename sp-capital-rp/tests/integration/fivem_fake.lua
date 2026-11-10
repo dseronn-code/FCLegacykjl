@@ -50,8 +50,30 @@ function GetPlayerIdentifierByType(src, t) return (Fake.identifiers[src] or {})[
 Fake.tokens = {}
 function GetNumPlayerTokens(src) return #(Fake.tokens[src] or {}) end
 function GetPlayerToken(src, i) return (Fake.tokens[src] or {})[i + 1] end
-function GetPlayerPed() return 1 end
-function GetEntityCoords() return { x = 100.5, y = 200.25, z = 30.0 } end
+Fake.coords = {}
+function GetPlayerPed(src) return src end
+function GetEntityCoords(ped) return Fake.coords[ped] or { x = 100.5, y = 200.25, z = 30.0 } end
+function GetPlayers()
+    local out = {}
+    for src in pairs(SPC.Players.bySource) do out[#out + 1] = tostring(src) end
+    return out
+end
+
+-- Inventário simulado (ox_inventory): Fake.inv[src][item] = quantidade
+Fake.inv, Fake.failAdd = {}, false
+local function bag(src) Fake.inv[src] = Fake.inv[src] or {}; return Fake.inv[src] end
+Fake.exportsTable.CanCarryItem = function() return true end
+Fake.exportsTable.GetItemCount = function(src, item) return bag(src)[item] or 0 end
+Fake.exportsTable.AddItem = function(src, item, n)
+    if Fake.failAdd then return false end
+    bag(src)[item] = (bag(src)[item] or 0) + n
+    return true
+end
+Fake.exportsTable.RemoveItem = function(src, item, n)
+    if (bag(src)[item] or 0) < n then return false end
+    bag(src)[item] = bag(src)[item] - n
+    return true
+end
 function GetEntityHeading() return 90.0 end
 
 function Player(src)

@@ -75,10 +75,13 @@ const files = [
 ];
 const adminRes = join(root, 'game', 'resources', '[spc-core]', 'spc_admin');
 files.push(join(adminRes, 'shared', 'admin_core.lua'), join(adminRes, 'server', 'db.lua'), join(adminRes, 'server', 'main.lua'));
+const res = (name, ...parts) => join(root, 'game', 'resources', '[spc-core]', name, ...parts);
+files.push(res('spc_needs', 'shared', 'needs_core.lua'), res('spc_needs', 'server', 'main.lua'));
+files.push(res('spc_bank', 'shared', 'config.lua'), res('spc_bank', 'shared', 'bank_core.lua'), res('spc_bank', 'server', 'main.lua'));
 for (const f of files) await lua.doString(readFileSync(f, 'utf8'));
 
 let passed = 0, failed = 0;
-for (const suite of ['test_server.lua', 'test_admin.lua']) {
+for (const suite of ['test_server.lua', 'test_admin.lua', 'test_phase2.lua']) {
   const r = await lua.doString(readFileSync(join(here, suite), 'utf8'));
   for (const f of Object.values(r.failures ?? {})) console.log(`FALHOU  [${suite}] ${f}`);
   passed += r.passed; failed += r.failed;

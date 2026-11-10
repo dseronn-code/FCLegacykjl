@@ -125,3 +125,24 @@ end
 function Ledger.balance(accountId)
     return DB.int(DB.scalar('SELECT balance FROM bank_accounts WHERE id = ?', { accountId }))
 end
+
+--- Últimos lançamentos da conta (extrato). Valores em centavos.
+function Ledger.statement(accountId, limit)
+    limit = math.min(math.tointeger(limit) or 20, 100)
+    local rows = DB.query([[
+        SELECT amount, balance_after, reason, ref_type, ref_id, DATE_FORMAT(created_at, '%Y-%m-%dT%H:%i:%sZ') AS at
+        FROM ledger_entries WHERE account_id = ? ORDER BY created_at DESC, id DESC LIMIT ?]], { accountId, limit }) or {}
+    local out = {}
+    for i, r in ipairs(rows) do
+        out[i] = { amount = DB.int(r.amount), balanceAfter = DB.int(r.balance_after), reason = r.reason,
+            refType = r.ref_type, refId = r.ref_id, at = r.at }
+    end
+    return out
+end
+
+--- Soma (positiva, em centavos) dos débitos da conta com o motivo desde o início do dia (UTC).
+function Ledger.debitedToday(accountId, reason)
+    return -(DB.int(DB.scalar([[
+        SELECT COALESCE(SUM(amount), 0) FROM ledger_entries
+        WHERE account_id = ? AND reason = ? AND amount < 0 AND created_at >= CURRENT_DATE]], { accountId, reason })) or 0)
+end

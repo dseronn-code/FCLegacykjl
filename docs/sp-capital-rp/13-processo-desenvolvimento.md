@@ -97,5 +97,7 @@ Status · Versão · Dono · Revisores
 | **Fase 1 — incremento 1:** `spc_core`, ledger, `spc_logs`, `spc_bridge`, migrações | ✅ código + testes |
 | Specs P0: `spc_multichar`, inventário, HUD, `spc_admin`, API e bot de whitelist | ✅ [specs/](specs/) |
 | **Fase 1 — incremento 2:** inventário, `spc_admin`, `spc_multichar`, `spc_hud`, API, bot | ✅ código + testes |
-| Specs P1 da Fase 2: necessidades, banco/caixas, veículos/garagens, DETRAN, hospital, polícia (MDT), celular | ⏳ próximo |
+| Specs da Fase 2: necessidades, banco, veículos, DETRAN, hospital, polícia/MDT, celular | ✅ [specs/](specs/) |
+| **Fase 2 — incremento 1:** `spc_needs`, `spc_bank` | ✅ código + testes |
+| **Fase 2 — incremento 2:** veículos/garagens/combustível, hospital, polícia/MDT, DETRAN, celular | ⏳ próximo |
 | Primeiro boot em FXServer de `staging` (64 slots) | ⏳ próximo |

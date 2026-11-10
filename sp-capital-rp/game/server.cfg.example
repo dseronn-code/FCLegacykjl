@@ -35,8 +35,11 @@ ensure ox_lib
 ensure spc_bridge
 ensure spc_logs
 ensure spc_core
+ensure ox_target
 ensure ox_inventory
 ensure spc_admin
+ensure spc_needs
+ensure spc_bank
 ensure spc_hud
 ensure spc_multichar
 ensure pma-voice

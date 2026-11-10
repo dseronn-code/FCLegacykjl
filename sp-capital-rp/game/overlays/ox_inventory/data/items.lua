@@ -10,12 +10,13 @@ local spc = {
     ['radio'] = { label = 'Rádio comunicador', weight = 800, stack = false, allowArmed = true },
     ['id_card'] = { label = 'RG', weight = 5, stack = false, close = true },
     ['driver_license'] = { label = 'CNH', weight = 5, stack = false, close = true },
-    -- Comida/bebida: efeitos em fome/sede virão com a spec de necessidades (servidor autoritativo)
-    ['water'] = { label = 'Água mineral', weight = 500 },
-    ['soda'] = { label = 'Refrigerante', weight = 350 },
-    ['sandwich'] = { label = 'Misto-quente', weight = 220 },
-    ['pastel'] = { label = 'Pastel de feira', weight = 200 },
-    ['coffee'] = { label = 'Café coado', weight = 150 },
+    -- Comida/bebida: o efeito (fome/sede/estresse) é aplicado pelo spc_needs no servidor (evento usedItem).
+    -- A animação com usetime é necessária: é ela que conclui o uso e dispara o evento.
+    ['water'] = { label = 'Água mineral', weight = 500, consume = 1, client = { anim = { dict = 'mp_player_intdrink', clip = 'loop_bottle' }, usetime = 2500 } },
+    ['soda'] = { label = 'Refrigerante', weight = 350, consume = 1, client = { anim = { dict = 'mp_player_intdrink', clip = 'loop_bottle' }, usetime = 2500 } },
+    ['coffee'] = { label = 'Café coado', weight = 150, consume = 1, client = { anim = { dict = 'mp_player_intdrink', clip = 'loop_bottle' }, usetime = 3000 } },
+    ['sandwich'] = { label = 'Misto-quente', weight = 220, consume = 1, client = { anim = 'eating', prop = 'burger', usetime = 3000 } },
+    ['pastel'] = { label = 'Pastel de feira', weight = 200, consume = 1, client = { anim = 'eating', prop = 'burger', usetime = 3000 } },
     ['bandage'] = { label = 'Atadura', weight = 115 },
     ['medkit'] = { label = 'Kit de primeiros socorros', weight = 1000, stack = false },
     ['lockpick'] = { label = 'Grampo', weight = 160 },
@@ -23,8 +24,7 @@ local spc = {
     ['fuelcan'] = { label = 'Galão de combustível', weight = 5000, stack = false },
 }
 
-for name, data in pairs(spc) do
-    items[name] = items[name] and lib.table.merge(items[name], data, false) or data
-end
+-- Substitui (não mescla): evita herdar `client.status` dos itens originais, que alteraria fome/sede no cliente
+for name, data in pairs(spc) do items[name] = data end
 
 return items

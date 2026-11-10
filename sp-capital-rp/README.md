@@ -3,7 +3,7 @@
 Monorepo da cidade (ADR-0009). Documentação, specs e decisões ficam em [`../docs/sp-capital-rp`](../docs/sp-capital-rp).
 **Nenhum código entra sem spec aprovada** ([processo](../docs/sp-capital-rp/13-processo-desenvolvimento.md)).
 
-## Estado atual — Fase 1 (Fundação)
+## Estado atual — Fase 1 concluída em código · Fase 2 em andamento
 
 | Componente | Spec | Estado |
 |------------|------|--------|
@@ -16,6 +16,9 @@ Monorepo da cidade (ADR-0009). Documentação, specs e decisões ficam em [`../d
 | Inventário — ponte `spc` do `ox_inventory`, itens, kit inicial | [inventario](../docs/sp-capital-rp/specs/inventario.md) | ✅ código; depende do FXServer |
 | API (`services/api`) — whitelist e status | [api-e-bot-whitelist](../docs/sp-capital-rp/specs/api-e-bot-whitelist.md) | ✅ testada contra MariaDB e Redis |
 | Bot do Discord (`apps/discord-bot`) — formulário, revisão, cargo, `/status` | [api-e-bot-whitelist](../docs/sp-capital-rp/specs/api-e-bot-whitelist.md) | ✅ tipos e lógica testados; falta rodar num Discord real |
+| `spc_needs` — fome, sede e estresse decididos no servidor; comida/bebida pelo `ox_inventory` | [necessidades](../docs/sp-capital-rp/specs/necessidades.md) | ✅ testado (integração) |
+| `spc_bank` — agências, caixas, saque, depósito, PIX com imposto, extrato | [banco](../docs/sp-capital-rp/specs/banco.md) | ✅ testado (integração) |
+| Veículos, DETRAN, hospital, polícia/MDT, celular | specs da Fase 2 | 📝 especificado, a implementar |
 | Migrações 0001–0003 | [02-banco-de-dados](../docs/sp-capital-rp/02-banco-de-dados.md) | ✅ |
 
 ## Estrutura
@@ -23,7 +26,7 @@ Monorepo da cidade (ADR-0009). Documentação, specs e decisões ficam em [`../d
 ```
 game/
   server.cfg.example
-  resources/[spc-core]/  spc_core · spc_logs · spc_bridge · spc_admin · spc_multichar · spc_hud
+  resources/[spc-core]/  spc_core · spc_logs · spc_bridge · spc_admin · spc_multichar · spc_hud · spc_needs · spc_bank
   overlays/ox_inventory/ ponte "spc" + itens (instalados por infra/scripts/install-overlays.sh)
 services/api/            Fastify + TypeScript
 apps/discord-bot/        discord.js v14
@@ -70,5 +73,5 @@ O bot precisa da permissão **Gerenciar cargos**, com o cargo dele acima do carg
 ## Limitações conhecidas
 
 - **Nada foi executado ainda dentro de um FXServer nem num Discord real.** O primeiro boot em staging é o próximo critério de aceite.
-- Comida e bebida ainda não alteram fome e sede (spec de necessidades pendente). O HUD mostra o status que o servidor enviar.
+- Caixas eletrônicos: o servidor ainda confia na posição do caixa informada pelo cliente (limitação documentada na spec do banco; impacto limitado pelos limites de saque).
 - Itens e grupos de emprego chegam com as specs de empregos; licenças (CNH, porte), com a do DETRAN.

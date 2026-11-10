@@ -50,3 +50,17 @@ exports('Charge', function(src, amount, to, reason, ref)
 end)
 
 exports('GetBalance', function(accountId) return SPC.Ledger.balance(accountId) end)
+
+exports('GetStatement', function(accountId, limit) return SPC.Ledger.statement(accountId, limit) end)
+exports('GetDebitedToday', function(accountId, reason) return SPC.Ledger.debitedToday(accountId, reason) end)
+
+--- Conta corrente pelo telefone do personagem (chave PIX). Retorna { accountId, citizenid, name } ou nil.
+exports('GetAccountByPhone', function(phone)
+    if type(phone) ~= 'string' or #phone > 16 then return nil end
+    local r = SPC.DB.single([[
+        SELECT b.id, c.citizenid, c.first_name, c.last_name FROM characters c
+        JOIN bank_accounts b ON b.owner_type = 'character' AND b.owner_id = c.id AND b.kind = 'checking'
+        WHERE c.phone_number = ? AND c.deleted_at IS NULL AND c.ck_at IS NULL]], { phone })
+    if not r then return nil end
+    return { accountId = SPC.DB.int(r.id), citizenid = r.citizenid, name = r.first_name .. ' ' .. r.last_name }
+end)
